@@ -2,15 +2,17 @@ import { Core } from '@strapi/strapi';
 import Redis from 'ioredis';
 import { LRUCache } from 'lru-cache';
 import cacheService from '../cache.service';
-import { getConfig } from '../../utils';
+import { getConfig, isMemoryEngine, isRedisEngine } from '../../utils';
 
 jest.mock('ioredis');
 jest.mock('lru-cache');
 jest.mock('../../utils', () => ({
   ...jest.requireActual('../../utils'),
-  getConfig: jest.fn(),
-  isMemoryEngine: jest.fn(),
-  isRedisEngine: jest.fn(),
+  getConfig: jest.fn().mockReturnValue({
+    engine: 'memory',
+  }),
+  isMemoryEngine: jest.fn().mockReturnValue(true),
+  isRedisEngine: jest.fn().mockReturnValue(false),
 }));
 
 const getMockStrapi = (config: any) =>
@@ -29,12 +31,6 @@ describe('cache.service', () => {
     const mockConfig = {
       engine: 'memory',
     };
-
-    beforeEach(() => {
-      (getConfig as jest.Mock).mockReturnValue(mockConfig);
-      (require('../../utils').isMemoryEngine as jest.Mock).mockReturnValue(true);
-      (require('../../utils').isRedisEngine as jest.Mock).mockReturnValue(false);
-    });
 
     it('should initialize memory cache engine', () => {
       // Arrange
@@ -128,8 +124,8 @@ describe('cache.service', () => {
 
     beforeEach(() => {
       (getConfig as jest.Mock).mockReturnValue(mockConfig);
-      (require('../../utils').isMemoryEngine as jest.Mock).mockReturnValue(false);
-      (require('../../utils').isRedisEngine as jest.Mock).mockReturnValue(true);
+      (isMemoryEngine as unknown as jest.Mock).mockReturnValue(false);
+      (isRedisEngine as unknown as jest.Mock).mockReturnValue(true);
     });
 
     it('should initialize Redis cache engine', () => {
