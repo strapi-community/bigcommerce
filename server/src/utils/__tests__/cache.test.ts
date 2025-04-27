@@ -4,6 +4,7 @@ import { MemoryEngine, RedisEngine } from '../../config/schema';
 describe('cacheDetection', () => {
   describe('isRedisEngine', () => {
     it('should return true for Redis engine config', () => {
+      // Arrange
       const redisConfig: RedisEngine = {
         engine: 'redis',
         connection: {
@@ -12,14 +13,25 @@ describe('cacheDetection', () => {
           db: 0,
         },
       };
-      expect(isRedisEngine(redisConfig)).toBe(true);
+
+      // Act
+      const result = isRedisEngine(redisConfig);
+
+      // Assert
+      expect(result).toBe(true);
     });
 
     it('should return false for Memory engine config', () => {
+      // Arrange
       const memoryConfig: MemoryEngine = {
         engine: 'memory',
       };
-      expect(isRedisEngine(memoryConfig)).toBe(false);
+
+      // Act
+      const result = isRedisEngine(memoryConfig);
+
+      // Assert
+      expect(result).toBe(false);
     });
   });
 
@@ -28,7 +40,12 @@ describe('cacheDetection', () => {
       const memoryConfig: MemoryEngine = {
         engine: 'memory',
       };
-      expect(isMemoryEngine(memoryConfig)).toBe(true);
+
+      // Act
+      const result = isMemoryEngine(memoryConfig);
+
+      // Assert
+      expect(result).toBe(true);
     });
 
     it('should return false for Redis engine config', () => {
@@ -40,7 +57,12 @@ describe('cacheDetection', () => {
           db: 0,
         },
       };
-      expect(isMemoryEngine(redisConfig)).toBe(false);
+
+      // Act
+      const result = isMemoryEngine(redisConfig);
+
+      // Assert
+      expect(result).toBe(false);
     });
   });
 });

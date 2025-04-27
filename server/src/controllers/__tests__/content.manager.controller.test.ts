@@ -9,10 +9,12 @@ jest.mock('../../utils', () => ({
   __esModule: true,
 }));
 
-const getMockStrapi = (findManyMock?: jest.Mock) =>
+const getMockStrapi = (searchProductsMock?: jest.Mock) =>
   ({
-    query: jest.fn().mockReturnValue({
-      findMany: findManyMock ?? jest.fn().mockResolvedValue([]),
+    plugin: jest.fn().mockReturnValue({
+      service: jest.fn().mockReturnValue({
+        searchProducts: searchProductsMock ?? jest.fn().mockResolvedValue([]),
+      }),
     }),
   }) as unknown as StrapiContext['strapi'];
 

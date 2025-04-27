@@ -17,7 +17,7 @@ describe('getPlugin', () => {
     const result = getPlugin(mockStrapi);
 
     // Assert
-    expect(mockStrapi.plugin).toHaveBeenCalledWith('shopify');
+    expect(mockStrapi.plugin).toHaveBeenCalledWith('big-commerce');
     expect(result).toBeDefined();
     expect(result.service).toBeDefined();
   });
