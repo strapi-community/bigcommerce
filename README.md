@@ -22,6 +22,9 @@ Connect your Strapi application with your BigCommerce store.
 - BigCommerce API credentials (`clientId`, `clientSecret`, `accessToken`, `storeHash`)
 - At least one BigCommerce Channel ID
 - URL for your BigCommerce Address Store API
+- **Required BigCommerce API Token Scopes:**
+    - `Products`: `read-only` (To read product data)
+    - `Storefront API Tokens`: `manage` (To create tokens for storefront product searching)
 
 ## Installation
 

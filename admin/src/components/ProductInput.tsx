@@ -73,7 +73,6 @@ export const ProductInput: FC<Props> = ({
     parsedValue,
     ...(products ?? []).filter(({ id }) => id !== parsedValue.productId),
   ].filter((_) => _ && _.id && _.name);
-  console.log('data', data);
 
   return (
     <Field name={name} hint={description} label={name} error={error}>
