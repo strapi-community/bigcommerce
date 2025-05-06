@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const baseConfig = z.object({
+export const pluginConfig = z.object({
   clientId: z.string().min(1),
   clientSecret: z.string().min(1),
   accessToken: z.string().min(1),
@@ -9,13 +9,14 @@ const baseConfig = z.object({
   allowedCorsOrigins: z.string().array().optional().default([]),
   addressStore: z.string().url(),
 });
+export type PluginConfig = z.infer<typeof pluginConfig>;
 
-const memoryEngine = baseConfig.extend({
+const memoryEngine = pluginConfig.extend({
   engine: z.literal('memory'),
 });
 export type MemoryEngine = z.infer<typeof memoryEngine>;
 
-const redisEngine = baseConfig.extend({
+const redisEngine = pluginConfig.extend({
   engine: z.literal('redis'),
   connection: z.object({
     host: z.string().min(1),
@@ -29,8 +30,8 @@ const redisEngine = baseConfig.extend({
 export type RedisEngine = z.infer<typeof redisEngine>;
 
 export const schemaConfig = z.intersection(
-  baseConfig,
+  pluginConfig,
   z.discriminatedUnion('engine', [memoryEngine, redisEngine])
 );
 
-export type PluginConfig = z.infer<typeof schemaConfig>;
+export type FullPluginConfig = z.infer<typeof schemaConfig>;

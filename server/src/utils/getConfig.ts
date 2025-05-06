@@ -1,5 +1,5 @@
 import { Core } from '@strapi/strapi';
-import { PluginConfig } from '../config/schema';
+import { FullPluginConfig } from '../config/schema';
 
-export const getConfig = (strapi: Core.Strapi): PluginConfig =>
+export const getConfig = (strapi: Core.Strapi): FullPluginConfig =>
   strapi.config.get('plugin::big-commerce');
