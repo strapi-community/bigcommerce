@@ -6,16 +6,11 @@ import { omit } from 'lodash';
 
 const bootstrap = async ({ strapi }: { strapi: Core.Strapi }) => {
   const adminService = getService(strapi, 'admin');
-  const config = await adminService.getStore().get({
-    key: 'config',
-  });
+  const config = await adminService.getConfig();
 
   if (!config) {
     const envConfig = getConfig(strapi);
-    await adminService.getStore().set({
-      key: 'config',
-      value: omit(envConfig, ['engine', 'connection']),
-    });
+    await adminService.updateConfig(omit(envConfig, ['engine', 'connection']));
   }
 
   await setupPermissions({ strapi });

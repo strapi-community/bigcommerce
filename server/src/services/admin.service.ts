@@ -1,12 +1,13 @@
+import { snakeCase } from 'lodash';
 import { FullPluginConfig, PluginConfig } from '../config/schema';
 import { StrapiContext } from '../@types';
 import { PLUGIN_ID } from '../const';
 
-const CONFIG_KEY = 'config';
+const CONFIG_KEY = 'store_config';
 export const adminService = ({ strapi }: StrapiContext) => {
   const store = strapi.store({
     type: 'plugin',
-    name: PLUGIN_ID,
+    name: snakeCase(PLUGIN_ID),
   });
   return {
     getStore() {

@@ -3,10 +3,7 @@ import { Middleware } from '@strapi/types/dist/modules/documents';
 import { ComponentField, DynamicZoneField, FieldType, ProductFieldsResult, RelationField } from '../../@types/document.service';
 import { COMPONENT_FIELDS } from '../../const';
 
-/**
- * Adds a shopify product to the result map
- */
-const addShopifyProductToResult = (
+const getCustomField = (
   result: ProductFieldsResult,
   fieldPath: string,
   product: number
@@ -18,10 +15,10 @@ const addShopifyProductToResult = (
  */
 const processRawField = (fieldData: any, fieldPath: string, result: ProductFieldsResult): void => {
   if (fieldData.product) {
-    return addShopifyProductToResult(result, fieldPath, fieldData.product);
+    return getCustomField(result, fieldPath, fieldData.product);
   }
   if (fieldData.productId) {
-    return addShopifyProductToResult(result, fieldPath, fieldData.productId);
+    return getCustomField(result, fieldPath, fieldData.productId);
   }
 };
 /**

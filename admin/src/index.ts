@@ -1,9 +1,45 @@
 import { flattenObject, prefixPluginTranslations } from '@sensinum/strapi-utils';
 import { en, getTradId, TranslationPath } from './translations';
 import { PLUGIN_ID } from './pluginId';
+import { Initializer } from './components/Initializer';
+
+import pluginPermissions from './utils/permissions';
 
 export default {
   register(app: any) {
+    app.createSettingSection(
+      {
+        id: PLUGIN_ID,
+        intlLabel: {
+          id: `${PLUGIN_ID}.plugin.section.name`,
+          defaultMessage: `BigCommerce plugin`,
+        },
+      },
+      [
+        {
+          intlLabel: {
+            id: `${PLUGIN_ID}.plugin.section.item`,
+            defaultMessage: 'Settings',
+          },
+          id: 'settings',
+          to: PLUGIN_ID,
+          // permissions: pluginPermissions.settings,
+          Component: async () => {
+            const { SettingsPage } = await import('./pages/Settings');
+
+            return SettingsPage;
+          },
+        },
+      ]
+    );
+
+    app.registerPlugin({
+      id: PLUGIN_ID,
+      initializer: Initializer,
+      isReady: false,
+      name: PLUGIN_ID,
+    });
+
     const customFieldLabel: TranslationPath = 'customField.label';
     const customFieldDescription: TranslationPath = 'customField.label';
 

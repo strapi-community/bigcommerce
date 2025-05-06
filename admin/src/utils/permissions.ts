@@ -12,7 +12,12 @@ const permissions = {
 
 // This should be equal to admin side. Strapi push to make admin and server independent chunks.
 const pluginPermissions = {
-  settings: [{ action: render(permissions.settings), subject: null }],
+  settings: [
+    {
+      action: `plugin::${PLUGIN_ID}.settings.read`,
+      subject: null,
+    },
+  ],
 };
 
 export default pluginPermissions;
