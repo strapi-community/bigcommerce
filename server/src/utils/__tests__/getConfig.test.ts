@@ -39,7 +39,7 @@ describe('getENVConfig', () => {
     const result = getENVConfig(mockStrapi);
 
     // Assert
-    expect(mockStrapi.config.get).toHaveBeenCalledWith('plugin::big-commerce');
+    expect(mockStrapi.config.get).toHaveBeenCalledWith('plugin::bigcommerce');
     expect(result).toBe(mockConfig);
   });
 

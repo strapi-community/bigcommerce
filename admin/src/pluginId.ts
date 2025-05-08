@@ -1,1 +1,1 @@
-export const PLUGIN_ID = 'big-commerce';
+export const PLUGIN_ID = 'bigcommerce';

@@ -40,7 +40,7 @@ export const getRestClient = ({ strapi }: StrapiContext) => {
     return json;
   };
 
-  const getCacheKey = (id: number) => `big-commerce:product:${id}`;
+  const getCacheKey = (id: number) => `bigcommerce:product:${id}`;
 
   const fetchProductsByIds = async (ids: number[]) => {
     if (!ids.length) return [];

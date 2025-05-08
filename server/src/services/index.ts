@@ -1,12 +1,12 @@
 import products from './products.service';
 import cache from './cache.service';
-import bigCommerce from './big-commerce.service';
+import bigCommerce from './bigcommerce.service';
 import admin from './admin.service';
 
 const services = {
   products,
   cache,
-  'big-commerce': bigCommerce,
+  'bigcommerce': bigCommerce,
   admin,
 };
 export type Services = {

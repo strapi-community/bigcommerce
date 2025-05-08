@@ -1,4 +1,4 @@
-import bigCommerceService from '../big-commerce.service';
+import bigCommerceService from '../bigcommerce.service';
 import type { StrapiContext } from '../../@types';
 import { getRestClient } from '../clients/rest.client';
 import { getGQLClient } from '../clients/gql.client';

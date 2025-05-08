@@ -26,7 +26,7 @@ describe('products.service', () => {
       getGQLClient: jest.fn(() => mockGQLClient),
     };
     mockGetService.mockImplementation((_strapi, name) => {
-      if (name === 'big-commerce') return mockBigCommerceService;
+      if (name === 'bigcommerce') return mockBigCommerceService;
       throw new Error('Unknown service: ' + name);
     });
   });

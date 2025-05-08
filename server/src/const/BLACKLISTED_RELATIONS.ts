@@ -1,7 +1,7 @@
 export const BLACKLISTED_RELATIONS = [
   'admin::',
   'plugin::upload',
-  'plugin::big-commerce',
+  'plugin::bigcommerce',
   'plugin::users-permissions',
   'plugin::review-workflows',
   'plugin::content-releases',

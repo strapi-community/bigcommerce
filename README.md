@@ -1,6 +1,7 @@
 # Strapi Plugin BigCommerce
 
-Connect your Strapi application with your BigCommerce store.
+A powerful Strapi plugin that seamlessly connects your Strapi application with BigCommerce stores through a user-friendly interface. It features a custom Shopify BigCommerce field, and efficient product synchronization capabilities. The plugin comes with built-in content types for store management, along with configurable caching mechanisms to optimize performance.
+
 
 ## Table of Contents
 
@@ -30,10 +31,10 @@ Connect your Strapi application with your BigCommerce store.
 
 ```bash
 # Using npm
-npm install strapi-plugin-big-commerce
+npm install @strapi-community/strapi-plugin-bigcommerce@latest
 
 # Using yarn
-yarn add strapi-plugin-big-commerce
+yarn add @strapi-community/strapi-plugin-bigcommerce@latest
 ```
 
 Then, rebuild your Strapi admin panel:
@@ -83,7 +84,7 @@ Create or update the file `./config/plugins.js` (or `.ts`):
 // ./config/plugins.js
 module.exports = ({ env }) => ({
   // ... other plugin configurations
-  'big-commerce': {
+  'bigcommerce': {
     enabled: true,
     config: {
       clientId: env('BIGCOMMERCE_CLIENT_ID'),
@@ -107,7 +108,7 @@ module.exports = ({ env }) => ({
 // ./config/plugins.js
 module.exports = ({ env }) => ({
   // ... other plugin configurations
-  'big-commerce': {
+  'bigcommerce': {
     enabled: true,
     config: {
       clientId: env('BIGCOMMERCE_CLIENT_ID'),

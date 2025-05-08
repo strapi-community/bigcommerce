@@ -4,7 +4,7 @@ import { ProductService } from './@types';
 
 export type Product = number;
 const productsService = ({ strapi }: StrapiContext): ProductService => {
-  const bigCommerceService = getService(strapi, 'big-commerce');
+  const bigCommerceService = getService(strapi, 'bigcommerce');
 
   return {
     async getProductsById(productIds: Product[]) {
