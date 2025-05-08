@@ -8,6 +8,7 @@ export const pluginConfig = z.object({
   channelId: z.number().int().positive().array().min(1),
   allowedCorsOrigins: z.string().array().optional().default([]),
   addressStore: z.string().url(),
+  encryptionKey: z.string().length(32)
 });
 export type PluginConfig = z.infer<typeof pluginConfig>;
 

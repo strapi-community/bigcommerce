@@ -1,7 +1,7 @@
 import { Core } from '@strapi/strapi';
 import { setupPermissions } from './permissions';
 import { getService } from './utils';
-import { getConfig } from './utils';
+import { getENVConfig } from './utils';
 import { omit } from 'lodash';
 
 const bootstrap = async ({ strapi }: { strapi: Core.Strapi }) => {
@@ -9,8 +9,8 @@ const bootstrap = async ({ strapi }: { strapi: Core.Strapi }) => {
   const config = await adminService.getConfig();
 
   if (!config) {
-    const envConfig = getConfig(strapi);
-    await adminService.updateConfig(omit(envConfig, ['engine', 'connection']));
+    const envConfig = getENVConfig(strapi);
+    await adminService.updateConfig(omit(envConfig, ['engine', 'connection', 'encryptionKey']));
   }
 
   await setupPermissions({ strapi });

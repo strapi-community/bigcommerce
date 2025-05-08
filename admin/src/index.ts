@@ -23,7 +23,7 @@ export default {
           },
           id: 'settings',
           to: PLUGIN_ID,
-          // permissions: pluginPermissions.settings,
+          permissions: pluginPermissions.settings,
           Component: async () => {
             const { SettingsPage } = await import('./pages/Settings');
 

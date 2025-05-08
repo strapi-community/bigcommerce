@@ -1,4 +1,4 @@
-import { getConfig } from '../getConfig';
+import { getENVConfig } from '../getENVConfig';
 import { Core } from '@strapi/strapi';
 import { FullPluginConfig, RedisEngine } from '../../config/schema';
 
@@ -25,7 +25,7 @@ const isRedisEngine = (config: FullPluginConfig): config is RedisEngine & { host
   return config.engine === 'redis';
 };
 
-describe('getConfig', () => {
+describe('getENVConfig', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -36,7 +36,7 @@ describe('getConfig', () => {
     const mockStrapi = getStrapiMock(mockConfig);
 
     // Act
-    const result = getConfig(mockStrapi);
+    const result = getENVConfig(mockStrapi);
 
     // Assert
     expect(mockStrapi.config.get).toHaveBeenCalledWith('plugin::big-commerce');
@@ -49,7 +49,7 @@ describe('getConfig', () => {
     const mockStrapi = getStrapiMock(mockConfig);
 
     // Act
-    const result = getConfig(mockStrapi);
+    const result = getENVConfig(mockStrapi);
 
     // Assert
     expect(result).toHaveProperty('addressStore');
@@ -79,7 +79,7 @@ describe('getConfig', () => {
     const mockStrapi = getStrapiMock(redisConfig);
 
     // Act
-    const result = getConfig(mockStrapi);
+    const result = getENVConfig(mockStrapi);
 
     // Assert
     expect(result).toHaveProperty('addressStore');
