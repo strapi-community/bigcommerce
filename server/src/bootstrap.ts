@@ -6,9 +6,9 @@ import { omit } from 'lodash';
 
 const bootstrap = async ({ strapi }: { strapi: Core.Strapi }) => {
   const adminService = getService(strapi, 'admin');
-  const config = await adminService.getConfig();
-
-  if (!config) {
+  try {
+    await adminService.getConfig();
+  } catch {
     const envConfig = getENVConfig(strapi);
     await adminService.updateConfig(omit(envConfig, ['engine', 'connection', 'encryptionKey']));
   }

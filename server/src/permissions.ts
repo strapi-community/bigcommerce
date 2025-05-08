@@ -23,6 +23,5 @@ export const setupPermissions = async ({ strapi }: { strapi: Core.Strapi }) => {
       pluginName: PLUGIN_ID,
     },
   ];
-
   await strapi.admin.services.permission.actionProvider.registerMany(actions);
 };

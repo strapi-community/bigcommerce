@@ -14,7 +14,7 @@ const permissions = {
 const pluginPermissions = {
   settings: [
     {
-      action: `plugin::${PLUGIN_ID}.settings.read`,
+      action: `plugin::${PLUGIN_ID}.settings`,
       subject: null,
     },
   ],

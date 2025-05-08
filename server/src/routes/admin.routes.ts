@@ -5,7 +5,7 @@ const routes: StrapiRoute<'admin'>[] = [
   {
     method: 'GET',
     path: '/settings',
-    handler: 'admin.getENVConfig',
+    handler: 'admin.getConfig',
     config: {
       policies: [
         {
