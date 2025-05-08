@@ -4,6 +4,8 @@ const en = {
     description: 'Add a bigcommerce product to your entry',
     product: {
       placeholder: 'Select a product',
+      minCharacters: 'Please provide minimum 3 characters',
+      noOptions: 'No options available',
     },
   },
 
