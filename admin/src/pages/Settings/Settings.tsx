@@ -93,7 +93,7 @@ export const Settings: FC = () => {
 
   return (
     <Layouts.Root>
-      <Form ref={formRef} method="PUT" initialValues={initialValues}>
+      <Form width="100%" height="100%" ref={formRef} method="PUT" initialValues={initialValues}>
         {({ values, onChange, setErrors, errors, modified }) => (
           <>
             <Page.Title>{formatMessage(getTrad('header.settings.tabTitle'))}</Page.Title>

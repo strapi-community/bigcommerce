@@ -3512,9 +3512,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@strapi-community/strapi-plugin-bigcommerce@workspace:.":
+"@strapi-community/bigcommerce@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@strapi-community/strapi-plugin-bigcommerce@workspace:."
+  resolution: "@strapi-community/bigcommerce@workspace:."
   dependencies:
     "@faker-js/faker": "npm:^9.6.0"
     "@sensinum/strapi-utils": "npm:^1.0.9"
@@ -3530,6 +3530,7 @@ __metadata:
     "@types/react": "npm:^18.3.8"
     "@types/react-dom": "npm:^18.3.0"
     fp-ts: "npm:^2.16.9"
+    husky: "npm:7.0.4"
     ioredis: "npm:^5.5.0"
     jest: "npm:^29.7.0"
     jest-cli: "npm:^29.7.0"
@@ -9420,6 +9421,15 @@ __metadata:
   version: 8.0.1
   resolution: "human-signals@npm:8.0.1"
   checksum: 10c0/195ac607108c56253757717242e17cd2e21b29f06c5d2dad362e86c672bf2d096e8a3bbb2601841c376c2301c4ae7cff129e87f740aa4ebff1390c163114c7c4
+  languageName: node
+  linkType: hard
+
+"husky@npm:7.0.4":
+  version: 7.0.4
+  resolution: "husky@npm:7.0.4"
+  bin:
+    husky: lib/bin.js
+  checksum: 10c0/aacb2b8fbfed0ec161f94e9b08d422c51fec073def4e165e57da42f47c10f520a5f0a88b42efc667784e314a1af83cf1994b582cd6f4b0333739921a601c6187
   languageName: node
   linkType: hard
 
