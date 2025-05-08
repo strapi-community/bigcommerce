@@ -3,23 +3,37 @@ import type { StrapiContext } from '../../../@types';
 import type { BigCommerceRestProduct } from '../../@types';
 
 describe('rest.client', () => {
-  function createStrapiMock({ config, cacheService }: { config: any; cacheService: any }) {
+  const mockConfig = {
+    accessToken: 'token',
+    storeHash: 'store',
+  };
+
+  const mockAdminService = {
+    getConfig: jest.fn().mockResolvedValue(mockConfig),
+    updateConfig: jest.fn(),
+    getStore: jest.fn(),
+  };
+
+  function createStrapiMock({ cacheService }: { cacheService: any }) {
     return {
-      config: { get: jest.fn().mockReturnValue(config) },
       plugin: jest.fn().mockReturnValue({
         service: jest.fn((name: string) => {
           if (name === 'cache') return cacheService;
+          if (name === 'admin') return mockAdminService;
           throw new Error('Unknown service: ' + name);
         }),
       }),
     } as unknown as StrapiContext['strapi'];
   }
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('returns empty array if no ids are provided', async () => {
     // Arrange
-    const config = { accessToken: 'token', storeHash: 'store' };
     const cacheService = { get: jest.fn(), set: jest.fn() };
-    const strapi = createStrapiMock({ config, cacheService });
+    const strapi = createStrapiMock({ cacheService });
     const client = getRestClient({ strapi });
 
     // Act
@@ -32,7 +46,6 @@ describe('rest.client', () => {
 
   it('returns cached products if all are cached', async () => {
     // Arrange
-    const config = { accessToken: 'token', storeHash: 'store' };
     const cachedProducts = [
       { id: 1, name: 'A', sku: 'a' },
       { id: 2, name: 'B', sku: 'b' },
@@ -45,7 +58,7 @@ describe('rest.client', () => {
       set: jest.fn(),
     };
     const fetchSpy = jest.spyOn(global, 'fetch' as any);
-    const strapi = createStrapiMock({ config, cacheService });
+    const strapi = createStrapiMock({ cacheService });
     const client = getRestClient({ strapi });
 
     // Act
@@ -60,7 +73,6 @@ describe('rest.client', () => {
 
   it('fetches missing products from API and caches them', async () => {
     // Arrange
-    const config = { accessToken: 'token', storeHash: 'store' };
     const cacheService = {
       get: jest
         .fn()
@@ -77,7 +89,7 @@ describe('rest.client', () => {
       ok: true,
       json: async () => ({ data: apiProducts }),
     } as any);
-    const strapi = createStrapiMock({ config, cacheService });
+    const strapi = createStrapiMock({ cacheService });
     const client = getRestClient({ strapi });
 
     // Act
@@ -96,12 +108,11 @@ describe('rest.client', () => {
 
   it('throws if fetch fails', async () => {
     // Arrange
-    const config = { accessToken: 'token', storeHash: 'store' };
     const cacheService = { get: jest.fn().mockResolvedValueOnce(undefined), set: jest.fn() };
     const fetchSpy = jest
       .spyOn(global, 'fetch' as any)
       .mockResolvedValue({ ok: false, status: 500, statusText: 'Server Error' } as any);
-    const strapi = createStrapiMock({ config, cacheService });
+    const strapi = createStrapiMock({ cacheService });
     const client = getRestClient({ strapi });
 
     // Act & Assert
@@ -113,7 +124,6 @@ describe('rest.client', () => {
 
   it('returns products in the order of input ids', async () => {
     // Arrange
-    const config = { accessToken: 'token', storeHash: 'store' };
     const cacheService = {
       get: jest
         .fn()
@@ -126,7 +136,7 @@ describe('rest.client', () => {
       ok: true,
       json: async () => ({ data: apiProducts }),
     } as any);
-    const strapi = createStrapiMock({ config, cacheService });
+    const strapi = createStrapiMock({ cacheService });
     const client = getRestClient({ strapi });
 
     // Act
@@ -139,7 +149,6 @@ describe('rest.client', () => {
 
   it('handles partial cache hits', async () => {
     // Arrange
-    const config = { accessToken: 'token', storeHash: 'store' };
     const cacheService = {
       get: jest
         .fn()
@@ -156,7 +165,7 @@ describe('rest.client', () => {
       ok: true,
       json: async () => ({ data: apiProducts }),
     } as any);
-    const strapi = createStrapiMock({ config, cacheService });
+    const strapi = createStrapiMock({ cacheService });
     const client = getRestClient({ strapi });
 
     // Act

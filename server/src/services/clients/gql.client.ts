@@ -1,9 +1,9 @@
-import { getConfig } from '../../utils';
+import { getService } from '../../utils';
 import { StrapiContext } from '../../@types';
-import { PluginConfig } from '../../config/schema';
 import { BigCommerceGqlProduct, BigCommerceGqlSearchProductsResponse } from '../@types';
 import { LRUCache } from 'lru-cache';
 import { BASE_API_URL } from '../../const';
+import { PluginConfig } from '../../config/schema';
 
 type StorefrontTokenCacheKey = string;
 interface StorefrontTokenCacheValue {
@@ -12,7 +12,7 @@ interface StorefrontTokenCacheValue {
 }
 
 export const getGQLClient = ({ strapi }: StrapiContext) => {
-  const config = getConfig(strapi) as PluginConfig;
+  const adminService = getService(strapi, 'admin');
 
   const tokenCache = new LRUCache<StorefrontTokenCacheKey, StorefrontTokenCacheValue>({
     max: 10, // support up to 10 different store/origin combos
@@ -54,8 +54,8 @@ export const getGQLClient = ({ strapi }: StrapiContext) => {
     return { token: json.data.token, expiresAt };
   };
 
-  const getStorefrontToken = async () => {
-    const allowedCorsOrigins = (config as any).allowedCorsOrigins || [];
+  const getStorefrontToken = async (config: PluginConfig) => {
+    const allowedCorsOrigins = config.allowedCorsOrigins || [];
     const cacheKey = getTokenCacheKey(config.storeHash, allowedCorsOrigins);
     const now = Math.floor(Date.now() / 1000);
     let cached = tokenCache.get(cacheKey);
@@ -71,8 +71,9 @@ export const getGQLClient = ({ strapi }: StrapiContext) => {
   };
 
   const gqlRequest = async <T>(query: string, variables?: Record<string, any>): Promise<T> => {
+    const config = await adminService.getConfig();
     const url = `https://store-${config.storeHash}.mybigcommerce.com/graphql`; // TODO: extract to config
-    const token = await getStorefrontToken();
+    const token = await getStorefrontToken(config);
     try {
       const init = {
         method: 'POST',
@@ -136,7 +137,7 @@ export const getGQLClient = ({ strapi }: StrapiContext) => {
     const { data } = await gqlRequest<BigCommerceGqlSearchProductsResponse>(query, {
       searchTerm: nameFragment,
     });
-    
+
     return data.site.search.searchProducts.products.edges.map((e) => ({
       productId: e.node.entityId,
       name: e.node.name,

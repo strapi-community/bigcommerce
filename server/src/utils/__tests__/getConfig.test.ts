@@ -1,8 +1,8 @@
-import { getConfig } from '../getConfig';
+import { getENVConfig } from '../getENVConfig';
 import { Core } from '@strapi/strapi';
-import { PluginConfig, RedisEngine } from '../../config/schema';
+import { FullPluginConfig, RedisEngine } from '../../config/schema';
 
-const getMockConfig = (): PluginConfig => ({
+const getMockConfig = (): FullPluginConfig => ({
   engine: 'memory',
   clientId: 'test-client-id',
   clientSecret: 'test-client-secret',
@@ -13,7 +13,7 @@ const getMockConfig = (): PluginConfig => ({
   addressStore: 'http://localhost',
 });
 
-const getStrapiMock = (mockConfig: PluginConfig = getMockConfig()) => {
+const getStrapiMock = (mockConfig: FullPluginConfig = getMockConfig()) => {
   return {
     config: {
       get: jest.fn().mockReturnValue(mockConfig),
@@ -21,11 +21,11 @@ const getStrapiMock = (mockConfig: PluginConfig = getMockConfig()) => {
   } as unknown as Core.Strapi;
 };
 
-const isRedisEngine = (config: PluginConfig): config is RedisEngine & { host: string } => {
+const isRedisEngine = (config: FullPluginConfig): config is RedisEngine & { host: string } => {
   return config.engine === 'redis';
 };
 
-describe('getConfig', () => {
+describe('getENVConfig', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -36,7 +36,7 @@ describe('getConfig', () => {
     const mockStrapi = getStrapiMock(mockConfig);
 
     // Act
-    const result = getConfig(mockStrapi);
+    const result = getENVConfig(mockStrapi);
 
     // Assert
     expect(mockStrapi.config.get).toHaveBeenCalledWith('plugin::big-commerce');
@@ -49,7 +49,7 @@ describe('getConfig', () => {
     const mockStrapi = getStrapiMock(mockConfig);
 
     // Act
-    const result = getConfig(mockStrapi);
+    const result = getENVConfig(mockStrapi);
 
     // Assert
     expect(result).toHaveProperty('addressStore');
@@ -59,7 +59,7 @@ describe('getConfig', () => {
 
   it('should work with redis engine configuration', () => {
     // Arrange
-    const redisConfig: PluginConfig = {
+    const redisConfig: FullPluginConfig = {
       engine: 'redis',
       clientId: 'test-client-id',
       clientSecret: 'test-client-secret',
@@ -75,11 +75,11 @@ describe('getConfig', () => {
         password: 'password',
         username: 'user',
       },
-    } as PluginConfig;
+    } as FullPluginConfig;
     const mockStrapi = getStrapiMock(redisConfig);
 
     // Act
-    const result = getConfig(mockStrapi);
+    const result = getENVConfig(mockStrapi);
 
     // Assert
     expect(result).toHaveProperty('addressStore');

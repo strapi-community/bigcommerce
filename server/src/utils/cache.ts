@@ -1,8 +1,8 @@
-import { MemoryEngine, PluginConfig, RedisEngine } from '../config/schema';
+import { MemoryEngine, FullPluginConfig, RedisEngine } from '../config/schema';
 
-export const isRedisEngine = (config: PluginConfig): config is RedisEngine => {
+export const isRedisEngine = (config: FullPluginConfig): config is RedisEngine => {
   return config.engine === 'redis';
 };
-export const isMemoryEngine = (config: PluginConfig): config is MemoryEngine => {
+export const isMemoryEngine = (config: FullPluginConfig): config is MemoryEngine => {
   return config.engine === 'memory';
 };

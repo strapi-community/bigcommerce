@@ -17,9 +17,25 @@ const mockConfig = {
   allowedCorsOrigins: ['http://localhost:3000'],
 };
 
-function createStrapiMock(config: any = mockConfig) {
+// Mock admin service
+const mockAdminService = {
+  getConfig: jest.fn().mockResolvedValue(mockConfig),
+  updateConfig: jest.fn(),
+  getStore: jest.fn(),
+};
+
+// Mock getService utility
+jest.mock('../../../utils', () => ({
+  getService: jest.fn().mockImplementation((strapi, serviceName) => {
+    if (serviceName === 'admin') {
+      return mockAdminService;
+    }
+    return null;
+  }),
+}));
+
+function createStrapiMock() {
   return {
-    config: { get: jest.fn().mockReturnValue(config) },
     log: {
       error: jest.fn(),
       warn: jest.fn(),
@@ -54,6 +70,7 @@ describe('gql.client', () => {
       const client = getGQLClient({ strapi });
       const mockTokenResponse = { data: { token: 'new-sf-token' } };
       mockLRUCacheInstance.get.mockReturnValue(undefined);
+
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockTokenResponse,
@@ -225,7 +242,8 @@ describe('gql.client', () => {
       const mockFetch = jest.spyOn(global, 'fetch');
       const configWithoutOrigins = { ...mockConfig };
       delete (configWithoutOrigins as any).allowedCorsOrigins;
-      const strapi = createStrapiMock(configWithoutOrigins);
+      mockAdminService.getConfig.mockResolvedValue(configWithoutOrigins);
+      const strapi = createStrapiMock();
       const client = getGQLClient({ strapi });
       const mockTokenResponse = { data: { token: 'token-no-origins' } };
       mockLRUCacheInstance.get.mockReturnValue(undefined);
@@ -288,8 +306,10 @@ describe('gql.client', () => {
         token: 'near-expiry-sf-token',
         expiresAt: Math.floor(Date.now() / 1000) + 50, // Expires in 50 seconds
       };
-      const expectedCacheKey = `${mockConfig.storeHash}|${mockConfig.allowedCorsOrigins.sort().join(',')}`;
       mockLRUCacheInstance.get.mockReturnValue(nearExpiryToken);
+      mockAdminService.getConfig.mockResolvedValue(mockConfig);
+
+      const expectedCacheKey = `${mockConfig.storeHash}|${mockConfig.allowedCorsOrigins.sort().join(',')}`;
 
       const mockTokenResponse = { data: { token: 'new-sf-token-after-near-expiry' } };
       mockFetch.mockResolvedValueOnce({

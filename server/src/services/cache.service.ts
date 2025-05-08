@@ -2,10 +2,10 @@ import { Core } from '@strapi/strapi';
 import Redis from 'ioredis';
 import { LRUCache } from 'lru-cache';
 import { StrapiContext } from '../@types';
-import { getConfig, isMemoryEngine, isRedisEngine } from '../utils';
+import { getENVConfig, isMemoryEngine, isRedisEngine } from '../utils';
 
 const getEngine = (strapi: Core.Strapi) => {
-  const config = getConfig(strapi);
+  const config = getENVConfig(strapi);
   if (!config.engine) {
     throw new Error('Cache engine is not defined');
   }
