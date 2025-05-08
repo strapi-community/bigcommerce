@@ -25,19 +25,19 @@ describe('getService', () => {
     // Arrange
     const mockService = getMockService();
     const mockStrapi = getStrapiMock(mockService);
-    const serviceName: keyof Services = 'big-commerce';
+    const serviceName: keyof Services = 'bigcommerce';
 
     // Act
     const result = getService(mockStrapi, serviceName);
 
     // Assert
 
-    expect(mockStrapi.plugin).toHaveBeenCalledWith('big-commerce');
-    expect(mockStrapi.plugin('big-commerce').service).toHaveBeenCalledWith(serviceName);
+    expect(mockStrapi.plugin).toHaveBeenCalledWith('bigcommerce');
+    expect(mockStrapi.plugin('bigcommerce').service).toHaveBeenCalledWith(serviceName);
     expect(result).toBe(mockService);
   });
 
-  it.each(['products', 'cache', 'big-commerce'] as const)(
+  it.each(['products', 'cache', 'bigcommerce'] as const)(
     'should work with service name: %s',
     (serviceName) => {
       // Arrange
@@ -48,7 +48,7 @@ describe('getService', () => {
       const result = getService(mockStrapi, serviceName);
 
       // Assert
-      expect(mockStrapi.plugin('big-commerce').service).toHaveBeenCalledWith(serviceName);
+      expect(mockStrapi.plugin('bigcommerce').service).toHaveBeenCalledWith(serviceName);
       expect(result).toBe(mockService);
     }
   );

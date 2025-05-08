@@ -17,7 +17,7 @@ describe('getPlugin', () => {
     const result = getPlugin(mockStrapi);
 
     // Assert
-    expect(mockStrapi.plugin).toHaveBeenCalledWith('big-commerce');
+    expect(mockStrapi.plugin).toHaveBeenCalledWith('bigcommerce');
     expect(result).toBeDefined();
     expect(result.service).toBeDefined();
   });
