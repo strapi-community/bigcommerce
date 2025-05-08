@@ -60,6 +60,7 @@ The following fields are **required**:
 - `storeHash` (string): Your BigCommerce Store Hash.
 - `channelId` (array of numbers): An array containing at least one BigCommerce Channel ID.
 - `addressStore` (string): The URL for your BigCommerce Address Store API endpoint.
+- `encryptionKey` (string): A 32-character string used for encrypting sensitive data.
 - `engine` (string): Specifies the storage engine for session data. Can be either `'memory'` or `'redis'`.
 - `connection` (object, **required if `engine` is `'redis'`**): Contains Redis connection details:
     - `host` (string)
@@ -93,6 +94,7 @@ module.exports = ({ env }) => ({
       addressStore: env('BIGCOMMERCE_ADDRESS_STORE_URL'),
       allowedCorsOrigins: ['http://localhost:3000'], // Optional
       engine: 'memory',
+      encryptionKey: env('BIGCOMMERCE_ENCRYPTION_KEY'),
     },
   },
   // ... other plugin configurations
@@ -123,6 +125,7 @@ module.exports = ({ env }) => ({
         password: env('REDIS_PASSWORD', undefined),
         username: env('REDIS_USERNAME', undefined), // If using Redis ACLs
       },
+      encryptionKey: env('BIGCOMMERCE_ENCRYPTION_KEY'),
     },
   },
   // ... other plugin configurations
