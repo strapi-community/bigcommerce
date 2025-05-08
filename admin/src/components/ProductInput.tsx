@@ -2,7 +2,7 @@ import { CustomFieldInputProps, Field } from '@sensinum/strapi-utils';
 import { Combobox, ComboboxOption, Flex } from '@strapi/design-system';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { debounce } from 'lodash';
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { z } from 'zod';
 import { useReadShopProducts } from '../hooks/readProducts.hook';
@@ -74,6 +74,8 @@ export const ProductInput: FC<Props> = ({
     ...(products ?? []).filter(({ id }) => id !== parsedValue.productId),
   ].filter((_) => _ && _.id && _.name);
 
+  const noOptionsMessage = useCallback((value: string) => value.length > 2 ? formatMessage(getTrad('customField.product.noOptions')) : formatMessage(getTrad('customField.product.minCharacters')), [formatMessage]);
+
   return (
     <Field name={name} hint={description} label={name} error={error}>
       <Flex direction="column" gap={5} width="100%" alignItems="stretch">
@@ -89,6 +91,7 @@ export const ProductInput: FC<Props> = ({
           placeholder={formatMessage(getTrad('customField.product.placeholder'))}
           loading={productLoading}
           onClear={onProductClear}
+          noOptionsMessage={noOptionsMessage}
         >
           {data.map(({ id, name }) => (
             <ComboboxOption key={id} value={id}>
